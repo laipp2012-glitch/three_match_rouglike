@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { Particle } from '../types';
+import { Particle } from '../types.ts';
 
 interface ParticleEffectProps {
   particles: Particle[];
@@ -14,12 +14,11 @@ const ParticleEffect: React.FC<ParticleEffectProps> = ({ particles, emoji, onCom
   useEffect(() => {
     let animationFrame: number;
     const startTime = Date.now();
-    const duration = 1000; // Total effect time
+    const duration = 1000;
 
-    // Physics constants based on emoji type
-    const drag = emoji === '🍇' ? 0.92 : 0.96; // Grapes have more "air resistance"
-    const gravity = emoji === '🍋' ? 0.08 : 0.15; // Lemon particles are "lighter"
-    const pushForce = emoji === '🍎' ? 1.05 : 1.02; // Apple has a sharper initial push
+    const drag = emoji === '🍇' ? 0.92 : 0.96;
+    const gravity = emoji === '🍋' ? 0.08 : 0.15;
+    const pushForce = emoji === '🍎' ? 1.05 : 1.02;
 
     const animate = () => {
       const elapsed = Date.now() - startTime;
@@ -32,7 +31,6 @@ const ParticleEffect: React.FC<ParticleEffectProps> = ({ particles, emoji, onCom
 
       setActiveParticles(prev => 
         prev.map(p => {
-          // Outward push effect is strongest at the start
           const currentPush = progress < 0.2 ? pushForce : 1.0;
           
           return {
@@ -69,7 +67,6 @@ const ParticleEffect: React.FC<ParticleEffectProps> = ({ particles, emoji, onCom
             opacity: p.life,
             transform: `translate(-50%, -50%) rotate(${p.rotation}deg) scale(${p.life + 0.5})`,
             boxShadow: progressToShadow(p.life, p.color),
-            // Pixel look: sharp edges
             borderRadius: '0px'
           }}
         />

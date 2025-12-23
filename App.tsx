@@ -4,13 +4,12 @@ import {
   GameState, Position, GRID_SIZE, EMOJI_COLORS, Particle, 
   Tile, Perk, PERKS, ENEMIES, ATTACK_INTERVAL,
   getMultiplier, Explosion
-} from './types';
-// Import getRandomEmoji from utils/gameLogic instead of types
-import { createInitialGrid, findMatches, areAdjacent, getPotentialMatches, getRandomEmoji } from './utils/gameLogic';
-import Board from './components/Board';
-import Stats from './components/Stats';
-import Controls from './components/Controls';
-import ParticleEffect from './components/ParticleEffect';
+} from './types.ts';
+import { createInitialGrid, findMatches, areAdjacent, getPotentialMatches, getRandomEmoji } from './utils/gameLogic.ts';
+import Board from './components/Board.tsx';
+import Stats from './components/Stats.tsx';
+import Controls from './components/Controls.tsx';
+import ParticleEffect from './components/ParticleEffect.tsx';
 
 const App: React.FC = () => {
   const [state, setState] = useState<GameState>({
@@ -72,7 +71,6 @@ const App: React.FC = () => {
 
       matchResult.tiles.forEach(t => {
         const tile = grid[t.row][t.col];
-        // Perk: Vampire Apple
         if (tile.emoji === '🍎' && state.activePerks.includes('vampire')) {
             healingToPlayer += 2;
         }
@@ -128,7 +126,6 @@ const App: React.FC = () => {
 
       await new Promise(resolve => setTimeout(resolve, 400));
 
-      // Gravity
       for (let c = 0; c < GRID_SIZE; c++) {
         let emptySpots = 0;
         for (let r = GRID_SIZE - 1; r >= 0; r--) {
@@ -210,7 +207,6 @@ const App: React.FC = () => {
 
   const selectPerk = (perkId: string) => {
     setState(prev => {
-      const perk = PERKS.find(p => p.id === perkId);
       let nextMaxHp = prev.playerMaxHp;
       let nextHp = prev.playerHp;
       
@@ -262,7 +258,7 @@ const App: React.FC = () => {
   const rewardPerks = useMemo(() => {
     const shuffled = [...PERKS].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, 3);
-  }, [state.view === 'reward']);
+  }, [state.view]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-slate-950 overflow-hidden font-sans">
@@ -291,7 +287,6 @@ const App: React.FC = () => {
                 </div>
             </div>
 
-            {/* Enemy HP Bar */}
             <div className="w-full h-3 bg-slate-800 rounded-full mb-6 overflow-hidden border border-white/5">
                 <div 
                     className="h-full bg-red-600 transition-all duration-500 shadow-[0_0_10px_rgba(220,38,38,0.5)]" 

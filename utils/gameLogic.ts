@@ -1,5 +1,5 @@
 
-import { GRID_SIZE, EMOJIS, Tile, Position, TileModifier } from '../types';
+import { GRID_SIZE, EMOJIS, Tile, Position, TileModifier } from '../types.ts';
 
 export const getRandomEmoji = () => EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
 
@@ -31,7 +31,6 @@ export const findMatches = (grid: Tile[][], lastActionPos: Position | null = nul
   const horizontalMatches: Position[][] = [];
   const verticalMatches: Position[][] = [];
 
-  // Horizontal
   for (let r = 0; r < GRID_SIZE; r++) {
     let count = 1;
     for (let c = 1; c <= GRID_SIZE; c++) {
@@ -48,7 +47,6 @@ export const findMatches = (grid: Tile[][], lastActionPos: Position | null = nul
     }
   }
 
-  // Vertical
   for (let c = 0; c < GRID_SIZE; c++) {
     let count = 1;
     for (let r = 1; r <= GRID_SIZE; r++) {
@@ -70,7 +68,6 @@ export const findMatches = (grid: Tile[][], lastActionPos: Position | null = nul
   let bonusType: TileModifier = 'none';
   let bonusPosition: Position | null = null;
 
-  // Process horizontal bonuses
   horizontalMatches.forEach(match => {
     match.forEach(p => {
         const key = `${p.row},${p.col}`;
@@ -79,13 +76,10 @@ export const findMatches = (grid: Tile[][], lastActionPos: Position | null = nul
             results.push(p);
         }
     });
-    
-    // Pattern detection
     if (match.length >= 5) bonusType = 'star';
     else if (match.length === 4 && bonusType !== 'star') bonusType = 'fire';
   });
 
-  // Process vertical bonuses
   verticalMatches.forEach(match => {
     match.forEach(p => {
         const key = `${p.row},${p.col}`;
@@ -94,12 +88,10 @@ export const findMatches = (grid: Tile[][], lastActionPos: Position | null = nul
             results.push(p);
         }
     });
-
     if (match.length >= 5) bonusType = 'star';
     else if (match.length === 4 && bonusType !== 'star' && bonusType !== 'lightning') bonusType = 'fire';
   });
 
-  // T/L shape check: Intersection
   for (let r = 0; r < GRID_SIZE; r++) {
     for (let c = 0; c < GRID_SIZE; c++) {
       const isHoriz = horizontalMatches.some(m => m.some(p => p.row === r && p.col === c));
@@ -111,7 +103,6 @@ export const findMatches = (grid: Tile[][], lastActionPos: Position | null = nul
     }
   }
 
-  // Determine bonus position (default to last action if applicable)
   if (bonusType !== 'none' && !bonusPosition) {
     if (lastActionPos && results.some(p => p.row === lastActionPos.row && p.col === lastActionPos.col)) {
         bonusPosition = lastActionPos;

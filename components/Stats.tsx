@@ -1,11 +1,10 @@
 
 import React from 'react';
-// Import ATTACK_INTERVAL from types file
-import { ATTACK_INTERVAL } from '../types';
+import { ATTACK_INTERVAL } from '../types.ts';
 
 interface StatsProps {
-  score: number; // В данном случае это HP
-  moves: number; // Ходы до атаки
+  score: number;
+  moves: number;
   combo: number;
   maxHp: number;
 }
