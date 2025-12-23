@@ -4,12 +4,12 @@ import {
   GameState, Position, GRID_SIZE, EMOJI_COLORS, Particle, 
   Tile, Perk, PERKS, ENEMIES, ATTACK_INTERVAL,
   getMultiplier, Explosion
-} from './types.ts';
-import { createInitialGrid, findMatches, areAdjacent, getPotentialMatches, getRandomEmoji } from './utils/gameLogic.ts';
-import Board from './components/Board.tsx';
-import Stats from './components/Stats.tsx';
-import Controls from './components/Controls.tsx';
-import ParticleEffect from './components/ParticleEffect.tsx';
+} from './types';
+import { createInitialGrid, findMatches, areAdjacent, getPotentialMatches, getRandomEmoji } from './utils/gameLogic';
+import Board from './components/Board';
+import Stats from './components/Stats';
+import Controls from './components/Controls';
+import ParticleEffect from './components/ParticleEffect';
 
 const App: React.FC = () => {
   const [state, setState] = useState<GameState>({

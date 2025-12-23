@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { ATTACK_INTERVAL } from '../types.ts';
+import { ATTACK_INTERVAL } from '../types';
 
 interface StatsProps {
   score: number;

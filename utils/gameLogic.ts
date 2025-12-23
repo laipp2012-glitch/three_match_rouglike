@@ -1,5 +1,5 @@
 
-import { GRID_SIZE, EMOJIS, Tile, Position, TileModifier } from '../types.ts';
+import { GRID_SIZE, EMOJIS, Tile, Position, TileModifier } from '../types';
 
 export const getRandomEmoji = () => EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
 

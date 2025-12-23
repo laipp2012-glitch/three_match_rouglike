@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Tile, Position } from '../types.ts';
+import { Tile, Position } from '../types';
 
 interface BoardProps {
   grid: Tile[][];

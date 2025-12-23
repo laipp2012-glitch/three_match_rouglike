@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { Particle } from '../types.ts';
+import { Particle } from '../types';
 
 interface ParticleEffectProps {
   particles: Particle[];
