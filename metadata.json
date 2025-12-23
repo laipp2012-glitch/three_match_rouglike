@@ -1,0 +1,5 @@
+{
+  "name": "Emoji Match-3 Pro",
+  "description": "A fully functional Match-3 puzzle game prototype featuring emojis, cascading combos, hints, and a scoring system.",
+  "requestFramePermissions": []
+}
