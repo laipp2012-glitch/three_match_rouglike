@@ -2,6 +2,7 @@
 export type TileModifier = 'none' | 'fire' | 'star' | 'lightning';
 
 export interface Tile {
+  id: string;
   emoji: string;
   modifier: TileModifier;
 }
@@ -11,86 +12,50 @@ export interface Position {
   col: number;
 }
 
+export interface Enemy {
+  name: string;
+  emoji: string;
+  hp: number;
+  damage: number;
+}
+
+export interface Perk {
+  id: string;
+  name: string;
+  desc: string;
+  icon: string;
+}
+
+// Added Particle interface to fix the module export error in ParticleEffect.tsx
 export interface Particle {
   id: string;
   x: number;
   y: number;
   vx: number;
   vy: number;
-  color: string;
-  size: number;
-  life: number;
-  rotation: number;
   vr: number;
+  rotation: number;
+  life: number;
+  size: number;
+  color: string;
 }
 
-export interface Explosion {
-  id: string;
-  row: number;
-  col: number;
-  emoji: string;
-  particles: Particle[];
-}
-
-export interface Perk {
-  id: string;
-  name: string;
-  description: string;
-  icon: string;
-}
-
-export type GameView = 'playing' | 'reward' | 'gameOver' | 'start';
-
-export interface GameState {
-  grid: Tile[][];
-  view: GameView;
-  floor: number;
-  playerHp: number;
-  playerMaxHp: number;
-  enemyHp: number;
-  enemyMaxHp: number;
-  movesUntilAttack: number;
-  selectedTile: Position | null;
-  isAnimating: boolean;
-  message: string;
-  hint: Position[] | null;
-  combo: number;
-  explosions: Explosion[];
-  activePerks: string[];
-}
+export type GameView = 'start' | 'playing' | 'reward' | 'gameOver';
 
 export const GRID_SIZE = 8;
 export const ATTACK_INTERVAL = 10;
 export const EMOJIS = ['🍎', '🍊', '🍋', '🍇', '🥝'];
 
-export const ENEMIES = [
-  { name: 'Slime', emoji: '🫠', hpBase: 500 },
-  { name: 'Ghost', emoji: '👻', hpBase: 1200 },
-  { name: 'Demon', emoji: '😈', hpBase: 2500 },
-  { name: 'Dragon', emoji: '🐲', hpBase: 5000 },
-  { name: 'Alien Queen', emoji: '👸', hpBase: 10000 },
+export const ENEMIES: Enemy[] = [
+  { name: 'Лесной Слизень', emoji: '🫠', hp: 600, damage: 15 },
+  { name: 'Теневой Дух', emoji: '👻', hp: 1500, damage: 20 },
+  { name: 'Огненный Демон', emoji: '😈', hp: 3500, damage: 25 },
+  { name: 'Древний Дракон', emoji: '🐲', hp: 8000, damage: 40 }
 ];
 
 export const PERKS: Perk[] = [
-  { id: 'vampire', name: 'Vampiric Apple', description: 'Red apples heal 2 HP when matched.', icon: '🧛' },
-  { id: 'pyro', name: 'Pyromancy', description: 'Fire explosions deal double damage.', icon: '🔥' },
-  { id: 'tank', name: 'Iron Heart', description: '+30 Max HP and full heal.', icon: '🛡️' },
-  { id: 'storm', name: 'Storm Caller', description: 'Lightning clears 2 random extra tiles.', icon: '⛈️' },
-  { id: 'lucky', name: 'Lucky Coin', description: 'Combos deal 50% more damage.', icon: '🍀' },
+  { id: 'vampire', name: 'Вампиризм', desc: 'Яблоки 🍎 лечат +5 HP', icon: '🧛' },
+  { id: 'pyro', name: 'Пиромантия', desc: 'Бомбы 🔥 в 2 раза сильнее', icon: '🔥' },
+  { id: 'tank', name: 'Броня', desc: '+50 к Макс. HP и лечение', icon: '🛡️' },
+  { id: 'lucky', name: 'Удача', desc: 'Комбо дают +50% урона', icon: '🍀' }
 ];
-
-export const EMOJI_COLORS: Record<string, string[]> = {
-  '🍎': ['#ef4444', '#dc2626', '#f87171'],
-  '🍊': ['#f97316', '#ea580c', '#fb923c'],
-  '🍋': ['#eab308', '#ca8a04', '#fde047'],
-  '🍇': ['#a855f7', '#9333ea', '#c084fc'],
-  '🥝': ['#22c55e', '#16a34a', '#4ade80'],
-};
-
-export const getMultiplier = (iteration: number): number => {
-  if (iteration <= 1) return 1;
-  if (iteration === 2) return 1.5;
-  if (iteration === 3) return 2;
-  if (iteration === 4) return 3;
-  return 5;
-};

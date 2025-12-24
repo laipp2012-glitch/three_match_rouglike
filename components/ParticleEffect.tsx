@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Particle } from '../types';
 
@@ -14,11 +13,7 @@ const ParticleEffect: React.FC<ParticleEffectProps> = ({ particles, emoji, onCom
   useEffect(() => {
     let animationFrame: number;
     const startTime = Date.now();
-    const duration = 1000;
-
-    const drag = emoji === '🍇' ? 0.92 : 0.96;
-    const gravity = emoji === '🍋' ? 0.08 : 0.15;
-    const pushForce = emoji === '🍎' ? 1.05 : 1.02;
+    const duration = 800; // Быстрее для более сочного эффекта
 
     const animate = () => {
       const elapsed = Date.now() - startTime;
@@ -31,12 +26,14 @@ const ParticleEffect: React.FC<ParticleEffectProps> = ({ particles, emoji, onCom
 
       setActiveParticles(prev => 
         prev.map(p => {
-          const currentPush = progress < 0.2 ? pushForce : 1.0;
+          // Имитация физики: замедление + гравитация
+          const drag = 0.95;
+          const gravity = 0.2;
           
           return {
             ...p,
-            x: p.x + (p.vx * currentPush),
-            y: p.y + (p.vy * currentPush),
+            x: p.x + p.vx,
+            y: p.y + p.vy,
             vx: p.vx * drag,
             vy: (p.vy * drag) + gravity,
             rotation: p.rotation + p.vr,
@@ -50,35 +47,31 @@ const ParticleEffect: React.FC<ParticleEffectProps> = ({ particles, emoji, onCom
 
     animationFrame = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animationFrame);
-  }, [onComplete, emoji]);
+  }, [onComplete]);
 
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-visible z-30">
-      {activeParticles.map(p => (
-        <div
-          key={p.id}
-          className="absolute"
-          style={{
-            left: `${p.x}%`,
-            top: `${p.y}%`,
-            width: `${p.size}px`,
-            height: `${p.size}px`,
-            backgroundColor: p.color,
-            opacity: p.life,
-            transform: `translate(-50%, -50%) rotate(${p.rotation}deg) scale(${p.life + 0.5})`,
-            boxShadow: progressToShadow(p.life, p.color),
-            borderRadius: '0px'
-          }}
-        />
-      ))}
+    <div className="absolute inset-0 pointer-events-none z-40" style={{ padding: '1.5rem' }}>
+      <div className="relative w-full h-full">
+        {activeParticles.map(p => (
+          <div
+            key={p.id}
+            className="absolute shadow-lg"
+            style={{
+              left: `${p.x}%`,
+              top: `${p.y}%`,
+              width: `${p.size}px`,
+              height: `${p.size}px`,
+              backgroundColor: p.color,
+              opacity: p.life,
+              transform: `translate(-50%, -50%) rotate(${p.rotation}deg) scale(${p.life + 0.3})`,
+              boxShadow: `0 0 10px ${p.color}88`,
+              borderRadius: '2px' // Делаем их квадратными "пикселями"
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 };
-
-function progressToShadow(life: number, color: string): string {
-  if (life > 0.8) return `0 0 8px ${color}`;
-  if (life > 0.5) return `0 0 4px ${color}`;
-  return 'none';
-}
 
 export default ParticleEffect;

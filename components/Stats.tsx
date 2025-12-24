@@ -1,48 +1,30 @@
-
 import React from 'react';
-import { ATTACK_INTERVAL } from '../types';
 
 interface StatsProps {
-  score: number;
+  playerHp: number;
+  playerMaxHp: number;
   moves: number;
-  combo: number;
-  maxHp: number;
+  attackInterval: number;
 }
 
-const Stats: React.FC<StatsProps> = ({ score, moves, combo, maxHp }) => {
-  const hpPercent = (score / maxHp) * 100;
-  
+const Stats: React.FC<StatsProps> = ({ playerHp, playerMaxHp, moves, attackInterval }) => {
   return (
-    <div className="grid grid-cols-2 gap-3 mb-6">
-      <div className="bg-slate-900 rounded-2xl p-3 border border-white/5 flex flex-col overflow-hidden relative">
-        <div className="flex justify-between items-center mb-1 relative z-10">
-            <span className="text-[9px] uppercase font-black text-slate-500 tracking-widest">Player HP</span>
-            <span className="text-xs font-bold text-white">{score}/{maxHp}</span>
+    <div className="grid grid-cols-2 gap-4">
+      <div className="bg-slate-800/40 p-4 rounded-3xl border border-white/5">
+        <div className="text-[10px] uppercase font-black text-slate-500 mb-1">Здоровье</div>
+        <div className="text-xl font-black text-emerald-400">{Math.ceil(playerHp)} HP</div>
+        <div className="w-full h-1.5 bg-slate-900 rounded-full mt-2 overflow-hidden">
+          <div className="h-full bg-emerald-500 transition-all duration-300" style={{width: `${(playerHp/playerMaxHp)*100}%`}} />
         </div>
-        <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden relative z-10">
-            <div 
-                className={`h-full transition-all duration-300 ${hpPercent < 30 ? 'bg-red-500' : 'bg-green-500'}`} 
-                style={{ width: `${hpPercent}%` }}
-            />
-        </div>
-        {combo > 1 && (
-            <div className="absolute top-0 right-0 bg-pink-600 text-[10px] px-2 py-0.5 rounded-bl-lg font-black animate-bounce z-20">
-                COMBO X{combo}
-            </div>
-        )}
       </div>
-
-      <div className="bg-slate-900 rounded-2xl p-3 border border-white/5 flex flex-col items-center justify-center">
-        <span className="text-[9px] uppercase font-black text-slate-500 tracking-widest mb-1">Next Enemy Attack</span>
-        <div className="flex items-center gap-1">
-            {[...Array(ATTACK_INTERVAL)].map((_, i) => (
-                <div 
-                    key={i} 
-                    className={`h-1.5 w-2 rounded-full transition-all ${i < moves ? 'bg-indigo-500' : 'bg-slate-700'}`}
-                />
-            ))}
+      <div className="bg-slate-800/40 p-4 rounded-3xl border border-white/5">
+        <div className="text-[10px] uppercase font-black text-slate-500 mb-1">До атаки</div>
+        <div className="text-xl font-black text-indigo-400">{moves} ходов</div>
+        <div className="flex gap-1 mt-2">
+          {[...Array(attackInterval)].map((_, i) => (
+            <div key={i} className={`h-1.5 flex-1 rounded-full ${i < moves ? 'bg-indigo-500' : 'bg-slate-700'}`} />
+          ))}
         </div>
-        <span className="text-xs font-black mt-1 text-indigo-400">{moves} moves left</span>
       </div>
     </div>
   );
